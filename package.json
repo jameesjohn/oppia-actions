@@ -1,0 +1,62 @@
+{
+  "name": "oppiabot",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Apurv Bajaj <apurvabajaj007@gmail.com>",
+  "license": "Apache 2.0",
+  "repository": "https://github.com/oppiabot/oppiabot.git",
+  "scripts": {
+    "dev": "nodemon",
+    "lint": "standard",
+    "start": "probot run ./index.js",
+    "test": "node ./spec/setup.js",
+    "actions-build": "ncc build actions/main.js",
+    "actions-build-test": "node ./spec/actionsBuild.js",
+    "update-actions-build": "node actions/build.js"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^2.2.0",
+    "google-auth-library": "^6.0.0",
+    "googleapis": "^51.0.0"
+  },
+  "probot": {
+    "apps": [
+      "probot-stale"
+    ]
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.2",
+    "husky": "^4.2.5",
+    "jasmine": "^3.1.0",
+    "lint-staged": "^10.2.6",
+    "nodemon": "^2.0.0",
+    "nyc": "^15.0.1",
+    "smee-client": "^1.0.1",
+    "standard": "^10.0.3"
+  },
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "standard": {
+    "env": [
+      "jasmine"
+    ]
+  },
+  "nodemonConfig": {
+    "exec": "npm start",
+    "watch": [
+      ".env"
+    ]
+  },
+  "lint-staged": {
+    "actions/**/*.+(js|json)": [
+      "npm run update-actions-build"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
