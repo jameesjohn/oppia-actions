@@ -57,10 +57,12 @@ const hasSignedCla = async (username) => {
   core.info(
     `Type of GOOGLE_CLIENT_CREDENTIALS: ${typeof GOOGLE_CLIENT_CREDENTIALS}`
   );
+  core.info(GOOGLE_CLIENT_CREDENTIALS);
   const GOOGLE_AUTH_CREDENTIALS = core.getInput('google-auth-credentials');
   core.info(
     `Type of GOOGLE_AUTH_CREDENTIALS: ${typeof GOOGLE_AUTH_CREDENTIALS}`
   );
+  core.info(GOOGLE_AUTH_CREDENTIALS);
   const CLA_SHEET_ID = core.getInput('cla-sheet-id');
 
   const oauth2Client = authorize(
