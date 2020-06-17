@@ -53,11 +53,13 @@ const checkAssignees = async () => {
  * @param {import('@actions/github').GitHub} octokit
  */
 const hasSignedCla = async (username) => {
-  const GOOGLE_CLIENT_CREDENTIALS = JSON.parse(
-    core.getInput('google-client-credentials')
+  const GOOGLE_CLIENT_CREDENTIALS = core.getInput('google-client-credentials');
+  core.info(
+    `Type of GOOGLE_CLIENT_CREDENTIALS: ${typeof GOOGLE_CLIENT_CREDENTIALS}`
   );
-  const GOOGLE_AUTH_CREDENTIALS = JSON.parse(
-    core.getInput('google-auth-credentials')
+  const GOOGLE_AUTH_CREDENTIALS = core.getInput('google-auth-credentials');
+  core.info(
+    `Type of GOOGLE_AUTH_CREDENTIALS: ${typeof GOOGLE_AUTH_CREDENTIALS}`
   );
   const CLA_SHEET_ID = core.getInput('cla-sheet-id');
 
