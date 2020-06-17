@@ -25,6 +25,7 @@ const EVENTS = {
 };
 const ACTIONS = {
   LABELLED: 'labeled',
+  ASSIGNED: 'assigned',
 };
 module.exports = {
   async dispatch(event, action) {
