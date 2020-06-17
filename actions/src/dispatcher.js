@@ -18,6 +18,7 @@
 
 const core = require('@actions/core');
 const issueLabelsModule = require('./issues/checkIssueLabels');
+const { checkAssignees } = require('./issues/checkIssueAssigned');
 
 const EVENTS = {
   ISSUES: 'issues',
@@ -29,8 +30,13 @@ module.exports = {
   async dispatch(event, action) {
     core.info(`Received Event:${event} Action:${action}.`);
     if (event === EVENTS.ISSUES) {
-      if (action === ACTIONS.LABELLED) {
-        await issueLabelsModule.checkLabels();
+      switch (action) {
+        case ACTIONS.ASSIGNED:
+          await checkAssignees();
+          break;
+        case ACTIONS.LABELLED:
+          await issueLabelsModule.checkLabels();
+          break;
       }
     }
   },
