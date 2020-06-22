@@ -53,35 +53,18 @@ const checkAssignees = async () => {
  * @param {import('@actions/github').GitHub} octokit
  */
 const hasSignedCla = async (username) => {
-  const GOOGLE_CLIENT_CREDENTIALS = JSON.parse(
-    JSON.stringify(core.getInput('google-client-credentials'))
-  );
-  core.info(
-    `Type of GOOGLE_CLIENT_CREDENTIALS: ${typeof GOOGLE_CLIENT_CREDENTIALS}`
-  );
-  core.info(GOOGLE_CLIENT_CREDENTIALS);
-  const GOOGLE_AUTH_CREDENTIALS = JSON.parse(
-    JSON.stringify(core.getInput('google-auth-credentials'))
-  );
-  core.info(
-    `Type of GOOGLE_AUTH_CREDENTIALS: ${typeof GOOGLE_AUTH_CREDENTIALS}`
-  );
-  core.info(GOOGLE_AUTH_CREDENTIALS);
+  const GOOGLE_API_KEY = core.getInput('google-api-key');
   const CLA_SHEET_ID = core.getInput('cla-sheet-id');
-
-  const oauth2Client = authorize(
-    GOOGLE_CLIENT_CREDENTIALS,
-    GOOGLE_AUTH_CREDENTIALS
-  );
 
   const sheets = google.sheets('v4');
   const rows = await sheets.spreadsheets.values.get({
-    auth: oauth2Client,
+    auth: GOOGLE_API_KEY,
     spreadsheetId: CLA_SHEET_ID,
     range: 'Usernames!A:A',
   });
 
   const hasUserSignedCla = rows.data.values.some((row) => {
+    core.info(`Checking ${row[0]}...`);
     return row[0].toLowerCase() === username.toLowerCase();
   });
 
