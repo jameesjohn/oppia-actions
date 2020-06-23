@@ -33,11 +33,15 @@ const checkAssignees = async () => {
       body: commentBody,
     });
 
-    await octokit.issues.removeAssignees({
+    const allAssignees = context.payload.issue.assignees;
+    const remainingAssignees = allAssignees.filter(
+      (user) => user.login !== assignee.login
+    );
+    await octokit.issues.update({
       issue_number: issue.number,
       repo: context.repo.owner,
       owner: context.repo.owner,
-      assignees: [assignee.login],
+      assignees: remainingAssignees,
     });
   }
 };
