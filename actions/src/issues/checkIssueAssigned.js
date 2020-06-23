@@ -25,23 +25,19 @@ const checkAssignees = async () => {
       'CLA before you can get assigned to issues. Follow the instructions ' +
       linkToCla +
       ' to get started. Thanks!';
+    // Remove assignee before commenting
+    await octokit.issues.removeAssignees({
+      issue_number: issue.number,
+      repo: context.repo.owner,
+      owner: context.repo.owner,
+      assignees: [assignee.login],
+    });
 
     await octokit.issues.createComment({
       issue_number: issue.number,
       repo: context.repo.repo,
       owner: context.repo.owner,
       body: commentBody,
-    });
-
-    const allAssignees = context.payload.issue.assignees;
-    const remainingAssignees = allAssignees.filter(
-      (user) => user.login !== assignee.login
-    );
-    await octokit.issues.update({
-      issue_number: issue.number,
-      repo: context.repo.owner,
-      owner: context.repo.owner,
-      assignees: remainingAssignees,
     });
   }
 };
