@@ -13,36 +13,32 @@ const checkAssignees = async () => {
     'https://github.com/oppia/oppia/wiki/Contributing-code-to-Oppia#setting-things-up'
   );
 
-  try {
-    core.info('Checking if ' + assignee.login + ' has signed the CLA');
-    const assigneeHasSignedCla = await hasSignedCla(assignee.login);
-    if (!assigneeHasSignedCla) {
-      core.info(assignee.login + ' has not signed the CLA');
+  core.info('Checking if ' + assignee.login + ' has signed the CLA');
+  const assigneeHasSignedCla = await hasSignedCla(assignee.login);
+  if (!assigneeHasSignedCla) {
+    core.info(assignee.login + ' has not signed the CLA');
 
-      const commentBody =
-        'Hi @' +
-        assignee.login +
-        ', you need to sign the ' +
-        'CLA before you can get assigned to issues. Follow the instructions ' +
-        linkToCla +
-        ' to get started';
+    const commentBody =
+      'Hi @' +
+      assignee.login +
+      ', you need to sign the ' +
+      'CLA before you can get assigned to issues. Follow the instructions ' +
+      linkToCla +
+      ' to get started. Thanks!';
 
-      await octokit.issues.createComment({
-        issue_number: issue.number,
-        repo: context.repo.repo,
-        owner: context.repo.owner,
-        body: commentBody,
-      });
+    await octokit.issues.createComment({
+      issue_number: issue.number,
+      repo: context.repo.repo,
+      owner: context.repo.owner,
+      body: commentBody,
+    });
 
-      await octokit.issues.removeAssignees({
-        issue_number: issue.number,
-        repo: context.repo.owner,
-        owner: context.repo.owner,
-        assignees: [assignee.login],
-      });
-    }
-  } catch (err) {
-    core.setFailed('The API returned an error: ' + err);
+    await octokit.issues.removeAssignees({
+      issue_number: issue.number,
+      repo: context.repo.owner,
+      owner: context.repo.owner,
+      assignees: [assignee.login],
+    });
   }
 };
 
@@ -69,15 +65,6 @@ const hasSignedCla = async (username) => {
   });
 
   return hasUserSignedCla;
-};
-
-const authorize = (clientCredentials, authCredentials) => {
-  var clientSecret = clientCredentials.installed.client_secret;
-  var clientId = clientCredentials.installed.client_id;
-  var redirectUrl = clientCredentials.installed.redirect_uris[0];
-  var oauth2Client = new OAuth2Client(clientId, clientSecret, redirectUrl);
-  oauth2Client.credentials = JSON.parse(authCredentials);
-  return oauth2Client;
 };
 
 module.exports = {
