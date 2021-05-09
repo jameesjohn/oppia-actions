@@ -19,9 +19,11 @@
 const core = require('@actions/core');
 const issueLabelsModule = require('./issues/checkIssueLabels');
 const { checkAssignees } = require('./issues/checkIssueAssigned');
+const  prLabelsModule = require('./pull_requests/labelCheck');
 
 const EVENTS = {
   ISSUES: 'issues',
+  PULL_REQUEST: 'pull_request'
 };
 const ACTIONS = {
   LABELLED: 'labeled',
@@ -39,6 +41,12 @@ module.exports = {
           await issueLabelsModule.checkLabels();
           break;
       }
+    } else if(event === EVENTS.PULL_REQUEST) {
+      switch(action) {
+        case ACTIONS.LABELLED:
+          await prLabelsModule.checkLabels();
+      }
     }
+
   },
 };
