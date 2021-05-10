@@ -43,8 +43,24 @@
    );
  };
 
- const handleDontMergeLabelRemoved = async(octokit) => {
-  core.info("This PR does not contain a PR don't merge label");
+const handleDontMergeLabelRemoved = async(octokit) => {
+  const {data: pullRequest} = await octokit.pulls.get({
+    pull_number: context.payload.pull_request.number,
+    owner: context.payload.repository.owner.login,
+    repo: context.payload.repository.name,
+  });
+
+  const labelNames = pullRequest.labels.map(label => label.name);
+
+  const dontMergeLabel = labelNames.find(
+    label => label.startsWith(DONT_MERGE_LABEL_PREFIX)
+  );
+
+  if (dontMergeLabel) {
+    await handleDontMergeLabel(octokit, dontMergeLabel);
+  } else {
+    core.info("This PR does not contain a PR don't merge label");
+  }
 };
 
 const checkUnLabeled = async () => {
