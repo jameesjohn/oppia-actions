@@ -44,7 +44,7 @@ module.exports = {
       }
     } else if(event === EVENTS.PULL_REQUEST) {
       switch(action) {
-        case ACTIONS.LABELLED:
+        case ACTIONS.LABELED:
           await prLabelsModule.checkLabels();
           break;
         case ACTIONS.UNLABELED:
