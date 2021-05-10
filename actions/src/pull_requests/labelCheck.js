@@ -43,6 +43,23 @@
    );
  };
 
- module.exports = {
-   checkLabels
- };
+ const handleDontMergeLabelRemoved = async(octokit) => {
+  core.setOutput("This PR does not contain a PR don't merge label");
+};
+
+const checkUnLabeled = async () => {
+  core.info('Checking newly added label...');
+  const token = core.getInput('repo-token');
+  const label = context.payload.label;
+  const octokit = new GitHub(token);
+  const user = context.payload.sender.login;
+
+  if (label.name.startsWith(DONT_MERGE_LABEL_PREFIX)) {
+    await handleDontMergeLabelRemoved(octokit, label.name);
+  }
+};
+
+module.exports = {
+  checkLabels,
+  checkUnLabeled,
+};

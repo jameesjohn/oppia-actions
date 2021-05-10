@@ -26,8 +26,9 @@ const EVENTS = {
   PULL_REQUEST: 'pull_request'
 };
 const ACTIONS = {
-  LABELLED: 'labeled',
+  LABELED: 'labeled',
   ASSIGNED: 'assigned',
+  UNLABELED: 'unlabeled',
 };
 module.exports = {
   async dispatch(event, action) {
@@ -45,6 +46,10 @@ module.exports = {
       switch(action) {
         case ACTIONS.LABELLED:
           await prLabelsModule.checkLabels();
+          break;
+        case ACTIONS.UNLABELED:
+          await prLabelsModule.checkUnLabeled();
+          break;
       }
     }
 
