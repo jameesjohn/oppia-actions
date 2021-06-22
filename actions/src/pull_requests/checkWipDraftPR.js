@@ -67,7 +67,7 @@
    core.info('Checking WIP');
 
    if (isDraftPr(pullRequest) || isWIPPr(pullRequest)) {
-     const hasSkipCIMessage = await isSkipCICommit(context);
+     const hasSkipCIMessage = await isSkipCICommit(octokit);
      if (!hasSkipCIMessage) {
        // Ping and assign PR author.
        const link = 'here'.link(
