@@ -46,9 +46,11 @@
  const isSkipCICommit = async (octokit) => {
    const pullRequest = context.payload.pull_request;
 
-   const commitParams = context.repo({
-     commit_sha: pullRequest.head.sha
-   });
+   core.info('Checking Commit Message');
+   const commitParams = {
+    commit_sha: pullRequest.head.sha,
+    ...context.repo
+  };
    const commitResponse = await octokit.git.getCommit(commitParams);
 
    return (
@@ -61,6 +63,8 @@
    const octokit = new GitHub(token);
    const pullRequest = context.payload.pull_request;
    const prAuthor = pullRequest.user.login;
+
+   core.info('Checking WIP');
 
    if (isDraftPr(pullRequest) || isWIPPr(pullRequest)) {
      const hasSkipCIMessage = await isSkipCICommit(context);
