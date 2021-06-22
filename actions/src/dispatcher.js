@@ -20,6 +20,7 @@ const core = require('@actions/core');
 const issueLabelsModule = require('./issues/checkIssueLabels');
 const { checkAssignees } = require('./issues/checkIssueAssigned');
 const  prLabelsModule = require('./pull_requests/labelCheck');
+const wipDraftModule = require('./pull_requests/checkWipDraftPR');
 
 const EVENTS = {
   ISSUES: 'issues',
@@ -29,6 +30,7 @@ const ACTIONS = {
   LABELED: 'labeled',
   ASSIGNED: 'assigned',
   UNLABELED: 'unlabeled',
+  OPENED: 'opened',
 };
 module.exports = {
   async dispatch(event, action) {
@@ -49,6 +51,9 @@ module.exports = {
           break;
         case ACTIONS.UNLABELED:
           await prLabelsModule.checkUnLabeled();
+          break;
+        case ACTIONS.OPENED:
+          await wipDraftModule.checkWIP();
           break;
       }
     }
