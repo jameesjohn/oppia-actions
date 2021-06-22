@@ -31,6 +31,7 @@ const ACTIONS = {
   ASSIGNED: 'assigned',
   UNLABELED: 'unlabeled',
   OPENED: 'opened',
+  REOPENED: 'reopened'
 };
 module.exports = {
   async dispatch(event, action) {
@@ -53,6 +54,9 @@ module.exports = {
           await prLabelsModule.checkUnLabeled();
           break;
         case ACTIONS.OPENED:
+          await wipDraftModule.checkWIP();
+          break;
+        case ACTIONS.REOPENED:
           await wipDraftModule.checkWIP();
           break;
       }
